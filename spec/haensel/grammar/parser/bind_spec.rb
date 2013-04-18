@@ -19,7 +19,7 @@ describe Grammar::Parser do
       }
     end
 
-    it "returns a Parser, which applies two parsers sequentially" do
+    it "returns a Parser which applies two parsers sequentially" do
       alnum = @alpha.bind { |x|
         @number.bind { |y|
           ret x + y
