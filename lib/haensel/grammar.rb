@@ -117,7 +117,7 @@ module Haensel
 
     def parse(str)
       result = Derivs.new(self, str).send(@start_symbol)
-      if result == NO_PARSE
+      if !result.succeeded?
         raise ParseError, "parse error"
       end
       result.value
