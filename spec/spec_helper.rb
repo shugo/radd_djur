@@ -1,4 +1,4 @@
-require "haensel/grammar"
+require "haensel"
 
 include Haensel
 include Grammar::Parsers
