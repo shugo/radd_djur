@@ -1,3 +1,5 @@
+require "immutable"
+
 module Haensel
   class Grammar
     class Result
@@ -25,6 +27,8 @@ module Haensel
     class ParseError < StandardError; end
 
     class Derivs
+      include Immutable
+
       def initialize(grammar, str)
         @grammar = grammar
         @str = str
@@ -32,11 +36,14 @@ module Haensel
       end
 
       def char
-        if @str.empty?
-          NO_PARSE
-        else
-          Parsed.new(@str[0], Derivs.new(@grammar, @str[1..-1]))
-        end
+        @memo[:char] ||=
+          Promise.delay {
+            if @str.empty?
+              NO_PARSE
+            else
+              Parsed.new(@str[0], Derivs.new(@grammar, @str[1..-1]))
+            end
+          }
       end
 
       def method_missing(mid, *args)
@@ -45,6 +52,8 @@ module Haensel
     end
 
     class Parser
+      include Immutable
+
       def initialize(&block)
         @block = block
       end
@@ -56,39 +65,45 @@ module Haensel
       def bind(&f2)
         p1 = self
         Parser.new { |d|
-          result = p1.parse(d)
-          if result.succeeded?
-            p2 = f2.call(result.value)
-            p2.parse(result.remainder)
-          else
-            NO_PARSE
-          end
+          Promise.lazy {
+            result = p1.parse(d).force
+            if result.succeeded?
+              p2 = f2.call(result.value)
+              p2.parse(result.remainder)
+            else
+              Promise.eager(NO_PARSE)
+            end
+          }
         }
       end
 
       def /(p2)
         p1 = self
         Parser.new { |d|
-          result = p1.parse(d)
-          if result.succeeded?
-            result
-          else
-            p2.parse(d)
-          end
+          Promise.lazy {
+            result = p1.parse(d).force
+            if result.succeeded?
+              Promise.eager(result)
+            else
+              p2.parse(d)
+            end
+          }
         }
       end
     end
 
     module Parsers
+      include Immutable
+
       def ret(value)
         Parser.new { |d|
-          Parsed.new(value, d)
+          Promise.eager(Parsed.new(value, d))
         }
       end
 
       def fail
         Parser.new { |d|
-          NO_PARSE
+          Promise.eager(NO_PARSE)
         }
       end
 
@@ -116,7 +131,7 @@ module Haensel
     end
 
     def parse(str)
-      result = Derivs.new(self, str).send(@start_symbol)
+      result = Derivs.new(self, str).send(@start_symbol).force
       if !result.succeeded?
         raise ParseError, "parse error"
       end
