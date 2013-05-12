@@ -1,4 +1,4 @@
-require "haensel"
+require "radd_djur"
 
-include Haensel
+include RaddDjur
 include Grammar::Parsers

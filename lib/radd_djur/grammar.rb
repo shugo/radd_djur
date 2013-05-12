@@ -1,6 +1,6 @@
 require "immutable"
 
-module Haensel
+module RaddDjur
   class Grammar
     class Result
     end

@@ -16,5 +16,5 @@ def with_tailcall_optimization
 end
 
 with_tailcall_optimization do
-  require "haensel/grammar"
+  require "radd_djur/grammar"
 end

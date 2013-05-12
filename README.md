@@ -1,5 +1,5 @@
-haensel - Packrat parser combinator library for Ruby
-====================================================
+radd\_djur - Packrat parser combinator library for Ruby
+=======================================================
 
 This project aims to provide immutable data structures for Ruby.
 
@@ -7,13 +7,13 @@ Install
 -------
 
 ```bash
-$ gem install haensel
+$ gem install radd_djur
 ```
 
 Documentation
 -------------
 
-* [API Reference](http://rubydoc.info/github/shugo/haensel/frames)
+* [API Reference](http://rubydoc.info/github/shugo/radd_djur/frames)
 
 License
 -------
