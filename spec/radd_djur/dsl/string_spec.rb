@@ -4,7 +4,7 @@ using RaddDjur::DSL
 
 describe Grammar do
   describe "String#to_parser" do
-    it "converts a plain object to a parser" do
+    it "converts a string to a parser" do
       grammar = Grammar.new(:foo) {
         define :foo, "foo"
       }
