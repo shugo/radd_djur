@@ -15,5 +15,17 @@ module RaddDjur
         Grammar::Parsers.string(self)
       end
     end
+
+    refine Range do
+      def to_parser
+        Grammar::Parsers.any_char.bind { |c|
+          if self.cover?(c)
+            ret c
+          else
+            fail
+          end
+        }
+      end
+    end
   end
 end
