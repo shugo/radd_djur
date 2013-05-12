@@ -120,6 +120,18 @@ module Haensel
           end
         }
       end
+
+      def string(str)
+        if str.empty?
+          ret ""
+        else
+          char(str[0]).bind { |c|
+            string(str[1..-1]).bind { |s|
+              ret c + s
+            }
+          }
+        end
+      end
     end
 
     include Parsers
@@ -138,7 +150,7 @@ module Haensel
       result.value
     end
 
-    def define(sym, parser)
+    def define(sym, parser = yield)
       @parsers[sym] = parser
     end
 
