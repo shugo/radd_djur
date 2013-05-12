@@ -1,4 +1,7 @@
 require "immutable"
+require "radd_djur/dsl"
+
+using RaddDjur::DSL
 
 module RaddDjur
   class Grammar
@@ -58,6 +61,10 @@ module RaddDjur
         @block = block
       end
 
+      def to_parser
+        self
+      end
+
       def parse(d)
         @block.call(d)
       end
@@ -69,7 +76,7 @@ module RaddDjur
             result = p1.parse(d).force
             if result.succeeded?
               p2 = f2.call(result.value)
-              p2.parse(result.remainder)
+              p2.to_parser.parse(result.remainder)
             else
               Promise.eager(NO_PARSE)
             end
@@ -85,7 +92,7 @@ module RaddDjur
             if result.succeeded?
               Promise.eager(result)
             else
-              p2.parse(d)
+              p2.to_parser.parse(d)
             end
           }
         }
@@ -94,6 +101,8 @@ module RaddDjur
 
     module Parsers
       include Immutable
+
+      module_function
 
       def ret(value)
         Parser.new { |d|
@@ -151,7 +160,7 @@ module RaddDjur
     end
 
     def define(sym, parser = yield)
-      @parsers[sym] = parser
+      @parsers[sym] = parser.to_parser
     end
 
     def parser(sym)
