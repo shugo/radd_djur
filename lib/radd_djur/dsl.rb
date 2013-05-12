@@ -10,6 +10,12 @@ module RaddDjur
       end
     end
 
+    refine Symbol do
+      def to_parser
+        Grammar::Parser.new(&self)
+      end
+    end
+
     refine String do
       def to_parser
         Grammar::Parsers.string(self)
@@ -20,9 +26,9 @@ module RaddDjur
       def to_parser
         Grammar::Parsers.any_char.bind { |c|
           if self.cover?(c)
-            ret c
+            Grammar::Parsers.ret(c)
           else
-            fail
+            Grammar::Parsers.fail
           end
         }
       end

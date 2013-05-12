@@ -2,7 +2,7 @@ require "spec_helper"
 
 using RaddDjur::DSL
 
-describe Grammar do
+describe DSL do
   describe "Range#to_parser" do
     it "converts a range object to a parser for a single character within the specified range" do
       grammar = Grammar.new(:foo) {
