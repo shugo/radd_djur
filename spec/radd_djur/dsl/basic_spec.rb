@@ -3,7 +3,7 @@ require "spec_helper"
 using RaddDjur::DSL
 
 describe Grammar do
-  describe "#parse" do
+  describe "String#to_parser" do
     it "converts a plain object to a parser" do
       grammar = Grammar.new(:foo) {
         define :foo, "foo"
