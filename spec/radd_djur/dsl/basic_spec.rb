@@ -5,8 +5,8 @@ using RaddDjur::DSL
 describe Grammar do
   describe "#parse" do
     it "converts a plain object to a parser" do
-      grammar = Grammar.new(:sequence) {
-        define :sequence, "foo"
+      grammar = Grammar.new(:foo) {
+        define :foo, "foo"
       }
       expect(grammar.parse("foo")).to eq "foo"
       expect {
