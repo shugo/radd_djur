@@ -67,9 +67,7 @@ Example
         }
       end
 
-      define :digit do
-        ?0..?9
-      end
+      define :digit, ?0..?9
     }
     p g.parse("2*(3+4)")
 
