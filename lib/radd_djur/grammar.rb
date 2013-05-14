@@ -143,6 +143,10 @@ module RaddDjur
         }
       end
 
+      def optional
+        self / ret(nil)
+      end
+
       def zero_or_more
         one_or_more / ret(List.empty)
       end

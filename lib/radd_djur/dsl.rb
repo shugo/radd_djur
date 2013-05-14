@@ -9,6 +9,10 @@ module RaddDjur
         to_parser / p2
       end
 
+      def optional
+        to_parser.optional
+      end
+
       def zero_or_more
         to_parser.zero_or_more
       end
