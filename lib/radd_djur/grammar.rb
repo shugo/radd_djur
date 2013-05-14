@@ -54,51 +54,6 @@ module RaddDjur
       end
     end
 
-    class Parser
-      include Immutable
-
-      def initialize(&block)
-        @block = block
-      end
-
-      def to_parser
-        self
-      end
-
-      def parse(d)
-        @block.call(d)
-      end
-
-      def bind(&f2)
-        p1 = self
-        Parser.new { |d|
-          Promise.lazy {
-            result = p1.parse(d).force
-            if result.succeeded?
-              p2 = f2.call(result.value)
-              p2.to_parser.parse(result.remainder)
-            else
-              Promise.eager(NO_PARSE)
-            end
-          }
-        }
-      end
-
-      def /(p2)
-        p1 = self
-        Parser.new { |d|
-          Promise.lazy {
-            result = p1.parse(d).force
-            if result.succeeded?
-              Promise.eager(result)
-            else
-              p2.to_parser.parse(d)
-            end
-          }
-        }
-      end
-    end
-
     module Parsers
       include Immutable
 
@@ -140,6 +95,64 @@ module RaddDjur
             }
           }
         end
+      end
+    end
+
+    class Parser
+      include Immutable
+      include Parsers
+
+      def initialize(&block)
+        @block = block
+      end
+
+      def to_parser
+        self
+      end
+
+      def parse(d)
+        @block.call(d)
+      end
+
+      def bind(&f2)
+        p1 = self
+        Parser.new { |d|
+          Promise.lazy {
+            result = p1.parse(d).force
+            if result.succeeded?
+              p2 = f2.call(result.value)
+              p2.to_parser.parse(result.remainder)
+            else
+              Promise.eager(NO_PARSE)
+            end
+          }
+        }
+      end
+
+      def /(p2)
+        p1 = self
+        Parser.new { |d|
+          Promise.lazy {
+            result = p1.parse(d).force
+            if result.succeeded?
+              Promise.eager(result)
+            else
+              p2.to_parser.parse(d)
+            end
+          }
+        }
+      end
+
+      def zero_or_more
+        one_or_more / ret(List.empty)
+      end
+
+      def one_or_more
+        bind { |x|
+          zero_or_more.bind { |xs|
+            ret xs.cons(x)
+          }
+        }
       end
     end
 

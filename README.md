@@ -57,17 +57,10 @@ Example
       end
 
       define :digits do
-        :digit.bind { |x|
-          :digits.bind { |y|
-            ret (x + y.to_s).to_i
-          }
-        } /
-        :digit.bind { |x|
-          ret x.to_i
+        (?0..?9).one_or_more.bind { |xs|
+          ret xs.foldl1(&:+).to_i
         }
       end
-
-      define :digit, ?0..?9
     }
     p g.parse("2*(3+4)")
 

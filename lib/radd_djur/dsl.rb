@@ -9,6 +9,14 @@ module RaddDjur
         to_parser / p2
       end
 
+      def zero_or_more
+        to_parser.zero_or_more
+      end
+
+      def one_or_more
+        to_parser.one_or_more
+      end
+
       def to_parser
         raise TypeError, "#{self.class} can't be converted to a Parser"
       end
