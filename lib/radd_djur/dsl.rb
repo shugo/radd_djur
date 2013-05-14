@@ -8,6 +8,10 @@ module RaddDjur
       def /(p2)
         to_parser / p2
       end
+
+      def to_parser
+        raise TypeError, "#{self.class} can't be converted to a Parser"
+      end
     end
 
     refine Symbol do
