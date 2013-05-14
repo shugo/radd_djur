@@ -22,7 +22,14 @@ Example
 
     using RaddDjur::DSL
 
+    # Define a new grammar, whose start symbol is additive.
     g = RaddDjur::Grammar.new(:additive) {
+
+      # Grammar#define defines a new parsing rule for a nonterminal symbol.
+      # The first argument is the name of the nonterminal symbol.
+      # In the following comments, parsing rules are expressed in PEG.
+
+      # additive <- multitive '+' additive / multitive
       define :additive do
         :multitive.bind { |x|
           "+".bind {
@@ -34,6 +41,7 @@ Example
         :multitive
       end
 
+      # multitive <- primary '*' multitive / primary
       define :multitive do
         :primary.bind { |x|
           "*".bind {
@@ -45,6 +53,7 @@ Example
         :primary
       end
 
+      # primary <- '(' additive ')' / digits
       define :primary do
         "(".bind {
           :additive.bind { |x|
@@ -56,6 +65,7 @@ Example
         :digits
       end
 
+      # digits <- [0-9]+
       define :digits do
         (?0..?9).one_or_more.bind { |xs|
           ret xs.foldl1(&:+).to_i
