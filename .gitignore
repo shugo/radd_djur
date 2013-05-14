@@ -1,19 +1,8 @@
-*.gem
-*.rbc
+.??*.swp
 .bundle
-.config
-coverage
-InstalledFiles
-lib/bundler/man
-pkg
-rdoc
-spec/reports
-test/tmp
-test/version_tmp
-tmp
 Gemfile.lock
-
-# YARD artifacts
+tags
+pkg
+coverage
 .yardoc
-_yardoc
-doc/
+doc
