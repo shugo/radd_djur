@@ -1,7 +1,5 @@
 source "http://rubygems.org"
 
-gem "immutable"
-
 group :development do
   gem "rake"
   gem "rspec"
