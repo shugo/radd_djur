@@ -20,6 +20,9 @@ Example
 
     require "radd_djur"
 
+    # Activate refinements for radd_djur DSL.
+    # In the DSL, a Ruby symbol represents a nonterminal symbol, and a Ruby
+    # string represents a terminal symbol.
     using RaddDjur::DSL
 
     # Define a new grammar, whose start symbol is additive.
