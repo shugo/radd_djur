@@ -15,6 +15,64 @@ Documentation
 
 * [API Reference](http://rubydoc.info/github/shugo/radd_djur/frames)
 
+Example
+-------
+
+    require "radd_djur"
+
+    using RaddDjur::DSL
+
+    g = RaddDjur::Grammar.new(:additive) {
+      define :additive do
+	:multitive.bind { |x|
+	  "+".bind {
+	    :additive.bind { |y|
+	      ret x + y
+	    }
+	  }
+	} /
+	:multitive
+      end
+
+      define :multitive do
+	:primary.bind { |x|
+	  "*".bind {
+	    :multitive.bind { |y|
+	      ret x * y
+	    }
+	  }
+	} /
+	:primary
+      end
+
+      define :primary do
+	"(".bind {
+	  :additive.bind { |x|
+	    ")".bind {
+	      ret x
+	    }
+	  }
+	} /
+	:digits
+      end
+
+      define :digits do
+	:digit.bind { |x|
+	  :digits.bind { |y|
+	    ret (x + y.to_s).to_i
+	  }
+	} /
+	:digit.bind { |x|
+	  ret x.to_i
+	}
+      end
+
+      define :digit do
+	?0..?9
+      end
+    }
+    p g.parse("2*(3+4)")
+
 License
 -------
 
