@@ -40,8 +40,7 @@ Example
               ret x + y
             }
           }
-        } /
-        :multitive
+        } / :multitive
       end
 
       # multitive <- primary '*' multitive / primary
@@ -52,8 +51,7 @@ Example
               ret x * y
             }
           }
-        } /
-        :primary
+        } / :primary
       end
 
       # primary <- '(' additive ')' / digits
@@ -64,8 +62,7 @@ Example
               ret x
             }
           }
-        } /
-        :digits
+        } / :digits
       end
 
       # digits <- [0-9]+
