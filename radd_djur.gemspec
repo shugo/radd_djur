@@ -11,4 +11,5 @@ Gem::Specification.new { |s|
   s.files = Dir.glob('{lib}/**/*') + ['README.md']
   s.require_path = "lib"
   s.add_dependency("immutable", "~>0.3.1")
+  s.add_development_dependency("rspec", "~>3.3")
 }
