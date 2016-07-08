@@ -78,6 +78,15 @@ Example
     }
     p g.parse("2*(3+4)")
 
+The above rules can be simplified using Array:
+
+      # additive <- multitive '+' additive / multitive
+      define :additive do
+	[:multitive, "+", :additive].bind { |x, *, y|
+	  ret x + y
+	} / :multitive
+      end
+
 License
 -------
 

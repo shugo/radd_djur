@@ -16,34 +16,22 @@ g = RaddDjur::Grammar.new(:additive) {
 
   # additive <- multitive '+' additive / multitive
   define :additive do
-    :multitive.bind { |x|
-      "+".bind {
-        :additive.bind { |y|
-          ret x + y
-        }
-      }
+    [:multitive, "+", :additive].bind { |x, *, y|
+      ret x + y
     } / :multitive
   end
 
   # multitive <- primary '*' multitive / primary
   define :multitive do
-    :primary.bind { |x|
-      "*".bind {
-        :multitive.bind { |y|
-          ret x * y
-        }
-      }
+    [:primary, "*", :multitive].bind { |x, *, y|
+      ret x * y
     } / :primary
   end
 
   # primary <- '(' additive ')' / digits
   define :primary do
-    "(".bind {
-      :additive.bind { |x|
-        ")".bind {
-          ret x
-        }
-      }
+    ["(", :additive, ")"].bind { |_, x, _|
+      ret x
     } / :digits
   end
 

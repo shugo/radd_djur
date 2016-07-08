@@ -1,5 +1,7 @@
 module RaddDjur
   module DSL
+    include Immutable
+
     refine Object do
       def bind(&block)
         to_parser.bind(&block)
@@ -47,6 +49,25 @@ module RaddDjur
             Grammar::Parsers.fail
           end
         }
+      end
+    end
+
+    refine Array do
+      def bind(&block)
+        list = List.from_array(self)
+        bind_list(list, List[], block)
+      end
+
+      private
+
+      def bind_list(list, args, block)
+        if list.empty?
+          block.call(*args.reverse.to_a)
+        else
+          list.head.bind { |x|
+            bind_list(list.tail, Cons[x, args], block)
+          }
+        end
       end
     end
   end
