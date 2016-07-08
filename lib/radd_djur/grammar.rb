@@ -5,6 +5,14 @@ using RaddDjur::DSL
 
 module RaddDjur
   class Grammar
+    INSTANCE_EVAL_USING_AVAILABLE = 
+      begin
+        instance_eval(using: RaddDjur::DSL) {}
+        true
+      rescue
+        false
+      end
+
     class Result
     end
 
@@ -165,7 +173,13 @@ module RaddDjur
     def initialize(start_symbol, &block)
       @parsers = {}
       @start_symbol = start_symbol
-      instance_exec(&block) if block
+      if block
+        if INSTANCE_EVAL_USING_AVAILABLE
+          instance_eval(using: RaddDjur::DSL, &block)
+        else
+          instance_eval(&block)
+        end
+      end
     end
 
     def parse(str)
