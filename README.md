@@ -1,7 +1,7 @@
 radd\_djur - Packrat parser combinator library for Ruby
 =======================================================
 
-This project aims to provide immutable data structures for Ruby.
+Packrat parser combinator library for Ruby
 
 Install
 -------
@@ -13,7 +13,7 @@ $ gem install radd_djur
 Documentation
 -------------
 
-* [API Reference](http://rubydoc.info/github/shugo/radd_djur/frames)
+* [API Reference](http://www.rubydoc.info/github/shugo/radd_djur/master)
 
 Example
 -------
