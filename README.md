@@ -3,6 +3,10 @@ radd\_djur - Packrat parser combinator library for Ruby
 
 Packrat parser combinator library for Ruby
 
+[![Build Status](https://secure.travis-ci.org/shugo/radd_djur.png)](http://travis-ci.org/shugo/radd_djur)
+[![Gem Version](https://badge.fury.io/rb/radd_djur.png)](http://badge.fury.io/rb/radd_djur)
+[![Dependency Status](https://gemnasium.com/shugo/radd_djur.svg)](https://gemnasium.com/shugo/radd_djur)
+
 Install
 -------
 
