@@ -10,5 +10,5 @@ Gem::Specification.new { |s|
   s.summary = "Packrat parser combinator library for Ruby"
   s.files = Dir.glob('{lib}/**/*') + ['README.md']
   s.require_path = "lib"
-  s.add_dependency("immutable", "~>0.3.1")
+  s.add_dependency("immutable", "~>0.3.2")
 }
