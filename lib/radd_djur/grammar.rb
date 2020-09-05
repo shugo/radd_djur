@@ -190,7 +190,11 @@ module RaddDjur
       result.value
     end
 
-    def define(sym, parser = yield)
+    def define(sym, parser = nil, &block)
+      if block
+        block.using(RaddDjur::DSL)
+        parser = block.call
+      end
       @parsers[sym] = parser.to_parser
     end
 
