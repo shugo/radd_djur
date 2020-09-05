@@ -191,9 +191,9 @@ module RaddDjur
     end
 
     def define(sym, parser = nil, &block)
-      parser = if block
+      if block
         block.using(RaddDjur::DSL)
-        block.call
+        parser = block.call
       end
       @parsers[sym] = parser.to_parser
     end
