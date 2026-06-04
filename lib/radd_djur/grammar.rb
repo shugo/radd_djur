@@ -5,13 +5,7 @@ using RaddDjur::DSL
 
 module RaddDjur
   class Grammar
-    INSTANCE_EVAL_USING_AVAILABLE = 
-      begin
-        instance_eval(using: RaddDjur::DSL) {}
-        true
-      rescue
-        false
-      end
+    WITH_REFINEMENTS_AVAILABLE = Proc.instance_methods.include?(:with_refinements)
 
     class Result
     end
@@ -174,11 +168,10 @@ module RaddDjur
       @parsers = {}
       @start_symbol = start_symbol
       if block
-        if INSTANCE_EVAL_USING_AVAILABLE
-          instance_eval(using: RaddDjur::DSL, &block)
-        else
-          instance_eval(&block)
+        if WITH_REFINEMENTS_AVAILABLE
+          block = block.with_refinements(RaddDjur::DSL)
         end
+        instance_eval(&block)
       end
     end
 
